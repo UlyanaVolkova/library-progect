@@ -4,6 +4,8 @@ import ru.volkova.libraryprogect.util.BookCreateDto;
 import ru.volkova.libraryprogect.util.BookDto;
 import ru.volkova.libraryprogect.util.BookUpdateDto;
 
+import java.util.List;
+
 public interface BookService {
     BookDto getByNameV1(String name);
 
@@ -14,4 +16,6 @@ public interface BookService {
     BookDto createBook(BookCreateDto bookCreateDto);
     BookDto updateBook(BookUpdateDto bookUpdateDto);
     void deleteBook(Long id);
+
+    List<BookDto> getAllBooks();
 }

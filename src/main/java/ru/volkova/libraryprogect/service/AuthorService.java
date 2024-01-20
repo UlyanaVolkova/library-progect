@@ -4,6 +4,8 @@ import ru.volkova.libraryprogect.util.AuthorCreateDto;
 import ru.volkova.libraryprogect.util.AuthorDto;
 import ru.volkova.libraryprogect.util.AuthorUpdateDto;
 
+import java.util.List;
+
 public interface AuthorService {
     AuthorDto getAuthorById(Long id);
 
@@ -18,4 +20,6 @@ public interface AuthorService {
     AuthorDto updateAuthor(AuthorUpdateDto authorUpdateDto);
 
     void deleteAuthor(Long id);
+
+    List<AuthorDto> getAllAuthors();
 }

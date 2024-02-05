@@ -8,7 +8,7 @@ import ru.volkova.libraryprogect.service.AuthorService;
 
 @Controller
 @RequiredArgsConstructor
-public class AuthorControllerMvs {
+public class AuthorControllerMvс {
     private final AuthorService authorService;
     @GetMapping("/authors")
     String getAuthorsView(Model model){

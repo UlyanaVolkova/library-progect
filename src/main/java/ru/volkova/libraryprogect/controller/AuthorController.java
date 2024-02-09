@@ -1,5 +1,6 @@
 package ru.volkova.libraryprogect.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.volkova.libraryprogect.service.AuthorService;
@@ -34,7 +35,7 @@ public class AuthorController {
     }
 
     @PostMapping("/author/create")
-    AuthorDto createAuthor(@RequestBody AuthorCreateDto authorCreateDto){
+    AuthorDto createAuthor(@RequestBody @Valid AuthorCreateDto authorCreateDto){
         return authorService.createAuthor(authorCreateDto);
     }
 

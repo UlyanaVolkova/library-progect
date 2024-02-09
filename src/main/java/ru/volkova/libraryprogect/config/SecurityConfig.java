@@ -1,6 +1,8 @@
 package ru.volkova.libraryprogect.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +22,7 @@ public class SecurityConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
 
+    @Autowired
     public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
@@ -37,17 +40,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http
-                .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/book").hasRole("USER")
-                                .requestMatchers("/book/v2").hasRole("ADMIN")
-                                .requestMatchers("/books").hasRole("ADMIN")
-                                .anyRequest().authenticated()
-                );
+    public SecurityFilterChain finalChain(HttpSecurity http) throws Exception {
         http.authenticationProvider(authenticationProvider());
+        http.authorizeHttpRequests((authz) -> authz
+                .requestMatchers("/auth/sign_in").permitAll()
+                .requestMatchers("/hello/say").hasAnyAuthority("ADMIN","USER")
+        );
         http.formLogin(form -> form
-                .loginPage("/auth/sign_in"));
+                .loginPage("/auth/sign_in")
+                .loginProcessingUrl("/process_login")
+                .defaultSuccessUrl("/hello/say")
+                .permitAll());
         return http.build();
     }
 

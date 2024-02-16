@@ -11,13 +11,18 @@ import java.util.Set;
 @Getter
 @Entity
 @Builder
+@Table(name = "role")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter
+    @Column(name = "id")
     private Long id;
-    @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "role_id")
-    private Set<Role> role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private RoleType roleType;
 
+    @OneToMany(mappedBy = "role")
+    private Set<User> users;
 }

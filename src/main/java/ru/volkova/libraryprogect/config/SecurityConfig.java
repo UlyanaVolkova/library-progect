@@ -41,15 +41,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain finalChain(HttpSecurity http) throws Exception {
-        http.authenticationProvider(authenticationProvider());
-        http.authorizeHttpRequests((authz) -> authz
+        http.
+                csrf().disable().
+                authorizeHttpRequests((authorize) ->
+                authorize
                 .requestMatchers("/auth/sign_in").permitAll()
-                .requestMatchers("/hello/say").hasAnyAuthority("ADMIN","USER")
+                .requestMatchers("/auth/sign_up").hasRole("ADMIN")
+                .anyRequest().authenticated()
         );
         http.formLogin(form -> form
                 .loginPage("/auth/sign_in")
                 .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/hello/say")
                 .permitAll());
         return http.build();
     }

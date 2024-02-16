@@ -1,5 +1,6 @@
 package ru.volkova.libraryprogect.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.volkova.libraryprogect.service.BookService;
@@ -9,6 +10,7 @@ import ru.volkova.libraryprogect.util.BookUpdateDto;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "library-users")
 public class BookController {
     private final BookService bookService;
 

@@ -5,28 +5,42 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import ru.volkova.libraryprogect.model.Author;
 import ru.volkova.libraryprogect.model.Book;
 import ru.volkova.libraryprogect.model.Genre;
 import ru.volkova.libraryprogect.repository.BookRepository;
 import ru.volkova.libraryprogect.repository.GenreRepository;
+import ru.volkova.libraryprogect.util.AuthorDto;
 import ru.volkova.libraryprogect.util.BookCreateDto;
 import ru.volkova.libraryprogect.util.BookDto;
 import ru.volkova.libraryprogect.util.BookUpdateDto;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BookServiceImpl implements BookService{
     private final BookRepository bookRepository;
     private final GenreRepository genreRepository;
     @Override
     public BookDto getByNameV1(String name){
-        Book book = bookRepository.findBookByName(name).orElseThrow();
-        return convertEntityToDto(book);
+        log.info("Try to find book by name {}", name);
+        Optional<Book> book = bookRepository.findBookByName(name);
+        if (book.isPresent()) {
+            BookDto bookDto = convertEntityToDto(book.get());
+            log.info("Book: {}", bookDto.toString());
+            return bookDto;
+        } else {
+            log.error("Book with name {} not found", name);
+            throw new NoSuchElementException("No value present");
+        }
     }
     private BookDto convertEntityToDto(Book book){
         return BookDto.builder()
@@ -38,8 +52,16 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public BookDto getByNameV2(String name){
-        Book book = bookRepository.findBookByNameBySql(name).orElseThrow();
-        return convertEntityToDto(book);
+        log.info("Try to find book by name {}", name);
+        Optional<Book> book = bookRepository.findBookByName(name);
+        if (book.isPresent()) {
+            BookDto bookDto = convertEntityToDto(book.get());
+            log.info("Book: {}", bookDto.toString());
+            return bookDto;
+        } else {
+            log.error("Book with name {} not found", name);
+            throw new NoSuchElementException("No value present");
+        }
     }
 
     @Override

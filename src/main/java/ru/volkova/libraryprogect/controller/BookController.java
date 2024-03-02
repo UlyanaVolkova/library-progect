@@ -1,6 +1,7 @@
 package ru.volkova.libraryprogect.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.volkova.libraryprogect.service.BookService;
@@ -30,12 +31,12 @@ public class BookController {
     }
 
     @PostMapping("/book/create")
-    BookDto createBook(@RequestBody BookCreateDto bookCreateDto){
+    BookDto createBook(@RequestBody @Valid BookCreateDto bookCreateDto){
         return bookService.createBook(bookCreateDto);
     }
 
     @PutMapping("/book/update")
-    BookDto updateBook(@RequestBody BookUpdateDto bookUpdateDto){
+    BookDto updateBook(@RequestBody @Valid BookUpdateDto bookUpdateDto){
         return bookService.updateBook(bookUpdateDto);
     }
 
